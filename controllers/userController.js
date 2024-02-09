@@ -26,9 +26,7 @@ async function createNewUser(req,res) {
     try {
         const user = await new User (req.body)
         await user.save()
-        return res.status(201).json({
-            User
-        })
+        return res.status(201).json({user: user})
     } catch (e) {
         return res.status(500).json({error: e.message})
     }

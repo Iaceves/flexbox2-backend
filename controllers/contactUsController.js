@@ -1,8 +1,8 @@
-const { ContactEmails } = require("../models");
+const { ContactEmail } = require("../models");
 
 const getAllContactEmails = async (req, res) => {
   try {
-    const contactEmails = await ContactEmails.find();
+    const contactEmails = await ContactEmail.find();
     res.json(contactEmails);
   } catch (error) {
     return res.status(500).send(error.message);
@@ -12,7 +12,7 @@ const getAllContactEmails = async (req, res) => {
 async function getOneContactEmail(req, res) {
   try {
     const id = req.params.id;
-    const contactEmail = await ContactEmails.findById(id);
+    const contactEmail = await ContactEmail.findById(id);
     if (contactEmail) {
       return res.json(contactEmail);
     }
@@ -24,9 +24,9 @@ async function getOneContactEmail(req, res) {
 
 async function createNewContactUsMessage(req, res) {
   try {
-    const contactMessage = new ContactEmails(req.body);
+    const contactMessage = await new ContactEmail(req.body);
     await contactMessage.save();
-    return res.status(201).json(contactMessage);
+    return res.status(201).json({ contactMessage: contactMessage });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
@@ -35,7 +35,7 @@ async function createNewContactUsMessage(req, res) {
 async function updateContactMessage(req, res) {
   try {
     const id = req.params.id;
-    const contactUs = await ContactEmails.findByIdAndUpdate(id, req.body, {
+    const contactUs = await ContactEmail.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     if (contactUs) {
@@ -50,7 +50,7 @@ async function updateContactMessage(req, res) {
 async function deleteContactMessage(req, res) {
   try {
     const id = req.params.id;
-    const deleteMessage = await ContactEmails.findByIdAndDelete(id);
+    const deleteMessage = await ContactEmail.findByIdAndDelete(id);
     if (deleteMessage) {
       return res
         .status(200)
